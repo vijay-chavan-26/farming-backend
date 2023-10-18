@@ -13,6 +13,9 @@ app.use(express.json());
 app.use(cors());
 
 app.use('/api/auth', SignupRoute);
+app.get('/health/status', (req,res)=>{
+  res.status(200).json({message: "working perfectly"})
+})
 
 const port = process.env.PORT || 5500;
 app.listen(port, () => {
