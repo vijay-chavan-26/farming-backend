@@ -1,6 +1,7 @@
 import { UserModel } from "../../models/UserModel.js";
 import mongoose from "mongoose";
 import bcrypt from "bcrypt";
+import jwt from "jsonwebtoken";
 
 const SignupController = async (req, res) => {
   try {
@@ -39,7 +40,12 @@ const SignupController = async (req, res) => {
     const userWithoutPassword = { ...newUser._doc };
     delete userWithoutPassword.password;
 
-    res.status(201).json({ message: "User registered successfully", user: userWithoutPassword });
+    const token = jwt.sign({ userId: userWithoutPassword._id }, process.env.SECRET_KEY, {
+      expiresIn: "15d", // Token expiration time (adjust as needed)
+    });
+
+
+    res.status(201).json({ token,message: "User registered successfully", user: userWithoutPassword });
   } catch (error) {
     console.error("Error in signup:", error);
     res.status(500).json({ message: "Internal server error" });
