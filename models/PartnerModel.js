@@ -27,6 +27,8 @@ const partnerSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+  price: {type:String, required:true},
+
 });
 
 // Create the Partner model

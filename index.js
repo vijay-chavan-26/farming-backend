@@ -1,7 +1,7 @@
 import express from 'express';
 import { config as dotenvConfig } from 'dotenv';
 import SignupRoute from './routers/login-routes/Signup.js'
-import PartnerRoute from './routers/partner/AddEquipment.js'
+import PartnerRoute from './routers/partner/PartnerRoutes.js'
 import {connectDb} from './db/config.js'
 import cors from 'cors'
 

@@ -1,4 +1,3 @@
-import path from "path";
 import fs from "fs/promises";
 import Partner from "../../models/PartnerModel.js";
 import cloudinary from "cloudinary";
@@ -6,7 +5,7 @@ import { UserModel } from "../../models/UserModel.js";
 
 const AddEquipmentController = async (req, res) => {
   try {
-    const { name, desc, type, status, partnerId } = req.body;
+    const { name, desc, type, status, partnerId, price } = req.body;
     console.log(name, desc, type, status, partnerId);
 
     cloudinary.config({
@@ -44,6 +43,7 @@ const AddEquipmentController = async (req, res) => {
       desc,
       type,
       status,
+      price,
       partnerId: existingUser._id,
       imageUrl: uploadedFile.secure_url,
     });

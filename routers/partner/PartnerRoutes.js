@@ -2,6 +2,8 @@ import {Router} from 'express'
 import path from "path"
 const router = Router()
 import AddEquipmentController from '../../controllers/partner/AddEquipmentController.js' 
+import GetEquipments from '../../controllers/partner/GetEquipments.js'
+import GetEquipmentsByID from '../../controllers/partner/GetEquipmentsByID.js'
 import { fileURLToPath } from 'url';
 import multer from 'multer';
 
@@ -23,6 +25,7 @@ let storage = multer.diskStorage({
 const upload = multer({ storage: storage });
 
 router.route('/create-equipment').post(upload.single('file'),AddEquipmentController)
-// router.route('/get-equipments').get()
+router.route('/get-equipments/all').get(GetEquipments);
+router.route('/get-equipments/by-id/:id').get(GetEquipmentsByID);
 
 export default router
