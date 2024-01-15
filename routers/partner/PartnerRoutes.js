@@ -6,6 +6,7 @@ import GetEquipments from '../../controllers/partner/GetEquipments.js'
 import GetEquipmentsByID from '../../controllers/partner/GetEquipmentsByID.js'
 import { fileURLToPath } from 'url';
 import multer from 'multer';
+import ChangeEquipmentStatus from '../../controllers/partner/ChangeEquipmentStatus.js'
 
 const currentDir = path.dirname(fileURLToPath(import.meta.url));
 
@@ -24,6 +25,7 @@ let storage = multer.diskStorage({
 
 const upload = multer({ storage: storage });
 
+router.route('/change-status').put(ChangeEquipmentStatus)
 router.route('/create-equipment').post(upload.single('file'),AddEquipmentController)
 router.route('/get-equipments/all').get(GetEquipments);
 router.route('/get-equipments/by-id/:id').get(GetEquipmentsByID);

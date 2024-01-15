@@ -46,10 +46,14 @@ const dealsSchema = new mongoose.Schema({
     type: String,
     default: "Pending",
   },
+  bookedQuantity: {
+    type: String,
+    required: true,
+  },
 });
 
 // Create the Deals model
-const DealsModel = mongoose.model("Deals", dealsSchema);
+const DealsModel = mongoose.model("deals", dealsSchema);
 
 // Export the Deals model
 export default DealsModel;

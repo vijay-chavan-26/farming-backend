@@ -6,7 +6,7 @@ export const connectDb = () =>{
         mongoose.connect(process.env.DATABASE_URL, {
             useNewUrlParser: true,
             useUnifiedTopology: true,
-          });
+          })
 
           console.log("db connected succesfully")
     } catch (error) {

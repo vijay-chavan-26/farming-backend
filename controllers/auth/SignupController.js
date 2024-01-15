@@ -15,7 +15,7 @@ const SignupController = async (req, res) => {
       return res
         .status(400)
         .json({
-          message: "User with this email or mobile_number already exists",
+          error: "User with this email or mobile_number already exists",
         });
     }
     // Hash the password before storing it in the database
@@ -48,7 +48,7 @@ const SignupController = async (req, res) => {
     res.status(201).json({ token,message: "User registered successfully", user: userWithoutPassword });
   } catch (error) {
     console.error("Error in signup:", error);
-    res.status(500).json({ message: "Internal server error" });
+    res.status(500).json({ error: "Internal server error" });
   }
 };
 

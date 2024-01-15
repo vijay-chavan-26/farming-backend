@@ -1,4 +1,6 @@
 import DealsModel from "../../models/DealsModel.js";
+import Partner from "../../models/PartnerModel.js";
+
 
 const createDeals = async (req, res) => {
   try {
@@ -11,12 +13,27 @@ const createDeals = async (req, res) => {
       itemId,
       farmerId,
       itemType,
-      partnerId
+      partnerId,
+      bookedQuantity,
     } = req.body;
-    console.log(req.body)
 
     const status = "Pending";
 
+    const partner = await Partner.findById(itemId);
+    if (!partner) {
+      return res.status(404).json({ error: "Partner not found" });
+    }
+    console.log(partner)
+console.log(partner.availableQuantity ,bookedQuantity)
+console.log(partner.availableQuantity < bookedQuantity)
+    if (partner.availableQuantity < bookedQuantity) {
+      return res.status(400).json({ error: "Not enough quantity available" });
+    }
+
+    partner.availableQuantity -= bookedQuantity;
+
+    
+    // Create a new Deal object with the information
     const newDeal = new DealsModel({
       name,
       email,
@@ -27,12 +44,22 @@ const createDeals = async (req, res) => {
       farmerId,
       itemType,
       partnerId,
-      status, // Include the status field
+      bookedQuantity,
+      status,
+    });
+    await newDeal.save();
+    console.log("Deal created:", newDeal);
+    
+    partner.unavailableDates.push({
+      startDate: bookingDate,
+      endDate: returnDate,
+      qty: bookedQuantity,
+      dealId: newDeal._id 
     });
 
-    await newDeal.save();
+    const data = await partner.save();
+    console.log("data", data)
 
-    console.log("Deal created:", newDeal);
 
     res.status(201).json({
       message: "Deal created successfully",

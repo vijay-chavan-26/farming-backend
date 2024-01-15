@@ -7,12 +7,12 @@ const AcceptDeals = async (req, res) => {
     if (!dealId) {
       return res.status(400).json({ error: 'Deal ID is required' });
     }
-
+    
     const updatedDeal = await DealsModel.findByIdAndUpdate(
       dealId,
       { status: 'Accepted' },
-      { new: true } // Return the modified document
-    );
+      { new: true } 
+      );
 
     if (!updatedDeal) {
       return res.status(404).json({ error: 'Deal not found' });

@@ -5,9 +5,8 @@ import { UserModel } from "../../models/UserModel.js";
 
 const AddEquipmentController = async (req, res) => {
   try {
-    const { name, desc, type, status, partnerId, price } = req.body;
-    console.log(name, desc, type, status, partnerId);
-
+    const { name, desc, type, status, partnerId, price, totalQuantity } = req.body;
+console.log({ name, desc, type, status, partnerId, price, totalQuantity })
     cloudinary.config({
       cloud_name: process.env.CLOUDNARY_CLOUD_NAME,
       api_key: process.env.CLOUDNARY_CLOUD_API,
@@ -18,15 +17,12 @@ const AddEquipmentController = async (req, res) => {
       return res.status(400).json({ error: "File is required" });
     }
 
-    console.log(req.file);
-
     // Upload file to Cloudinary
     const uploadedFile = await cloudinary.v2.uploader.upload(req.file.path, {
       public_id: req.file.originalname,
       tags: "partner_image",
     });
 
-    console.log(uploadedFile.secure_url);
     // Delete the local file
     await fs.unlink(req.file.path);
 
@@ -44,15 +40,18 @@ const AddEquipmentController = async (req, res) => {
       type,
       status,
       price,
-      partnerId: existingUser._id,
+      partnerId,
+      totalQuantity, // Assuming totalQuantity is sent from the client
+      availableQuantity: totalQuantity, // Initially, all quantity is available
       imageUrl: uploadedFile.secure_url,
     });
 
     // Save the new Partner to MongoDB
     const savedPartner = await newPartner.save();
+    console.log(savedPartner)
 
     // Return the saved Partner data as a response
-    res.status(201).json({ message: "Equipment Added Successfully!" ,data: savedPartner });
+    res.status(201).json({ message: "Equipment Added Successfully!", data: savedPartner });
   } catch (error) {
     console.error("Error in adding equipment:", error);
     res.status(500).json({ error: "Internal server error" });

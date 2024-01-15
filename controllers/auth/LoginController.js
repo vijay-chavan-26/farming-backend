@@ -30,7 +30,7 @@ const LoginController = async (req, res) => {
       .json({ token, type: user.type, message: "Login successful" });
   } catch (error) {
     console.error("Error in login:", error);
-    res.status(500).json({ message: "Internal server error" });
+    res.status(500).json({ error: "Internal server error" });
   }
 };
 
